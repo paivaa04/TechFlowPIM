@@ -1,0 +1,90 @@
+# .gitignore for Visual Studio / .NET projects
+# Generated and adapted for this repository
+
+# Build outputs
+**/bin/
+**/obj/
+bin/
+obj/
+
+# Visual Studio
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.ncb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+
+# Rider
+.idea/
+*.sln.iml
+
+# NuGet / Packages
+packages/
+**/packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+.nuget/
+
+# Build results, logs and reports
+*.log
+TestResults/
+*.TestResults
+publish/
+*.Publish.xml
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Resx / Resources
+# NÃO ignore arquivos .resx se forem seus próprios recursos;
+# mantenha esta linha comentada se seu projeto usa arquivos .resx do WinForms.
+# *.resx
+
+# Database files and EF artifacts
+*.mdf
+*.ldf
+*.ndf
+*.dbmdl
+
+# Executables / binaries
+*.exe
+*.dll
+*.pdb
+*.appx
+*.msi
+
+# User-specific files
+*.user
+*.userprefs
+
+# Misc
+*.bak
+*.old
+*.orig
+*.tmp
+*.temp
+
+# Publish / packaging outputs
+_UpgradeReport_Files/
+UpgradeLog*.XML
+Backup*/
+
+# Keep project and solution files under source control
+!*.csproj
+!*.sln
+!*.config
+!*.resx
+
+# End of .gitignore
