@@ -49,12 +49,12 @@ namespace Empresa.Db
         {
             using (var ctx = new AppDbContext())
             {
-                // Força a busca do registro direto neste novo contexto pelo ID bruto
+                
                 var chamadoNoBanco = ctx.Chamados.FirstOrDefault(c => c.Id == chamadoAtualizado.Id);
 
                 if (chamadoNoBanco != null)
                 {
-                    // Atualiza explicitamente os campos permitidos
+                    
                     chamadoNoBanco.Status = chamadoAtualizado.Status;
                     chamadoNoBanco.Descricao = chamadoAtualizado.Descricao;
 
@@ -99,7 +99,7 @@ namespace Empresa.Db
             {
                 if (tipoUsuario == LoginDb.TipoUsuario.Tecnico)
                 {
-                    // O AsNoTracking() garante que virem dados frescos do banco
+                   
                     return ctx.Chamados.AsNoTracking().ToList();
                 }
                 else
