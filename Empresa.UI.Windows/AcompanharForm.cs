@@ -145,7 +145,7 @@ namespace Empresa.UI.Windows
         {
             try
             {
-                using (SqlConnection cn = new SqlConnection(@"Data Source = (localdb)\MSSQLLocalDB; Initial Catalog = Empresa.PIM; Integrated Security = True; Pooling = False"))
+                using (SqlConnection cn = new SqlConnection(@"Data Source = Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=TechFlow;Integrated Security=True;Pooling=False"))
                 {
                     string sql = "SELECT Id, Nome, Email, Setor, Assunto, Descricao, DataAbertura, Prioridade, Status FROM Chamados";
 
@@ -329,7 +329,37 @@ namespace Empresa.UI.Windows
             MessageBox.Show("Chamado alterado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             voltarButton_Click(sender, e); // Retorna automaticamente para a tabela atualizada
         }
+        private void finalizarButton_Click(object sender, EventArgs e)
+        {
+            if (listaDataGridView.CurrentRow == null) return;
 
+            DialogResult confirm = MessageBox.Show(
+                "Deseja encerrar e finalizar este chamado definitivamente?",
+                "Finalizar Chamado",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (confirm == DialogResult.Yes)
+            {
+                try
+                {
+                    int idChamado = Convert.ToInt32(listaDataGridView.CurrentRow.Cells["Id"].Value);
+
+                    var db = new ChamadoDb();
+                    db.FinalizarChamado(idChamado); 
+
+                    MessageBox.Show("Chamado finalizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    
+                    voltarButton_Click(sender, e);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro ao finalizar chamado: " + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
         private void listaDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
         private void panel1_Paint(object sender, PaintEventArgs e) { }
     }

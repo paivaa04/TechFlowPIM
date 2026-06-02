@@ -348,5 +348,6 @@
         private System.Windows.Forms.Button deletarButton;
         private System.Windows.Forms.TextBox statusTextBox;
         private System.Windows.Forms.Label statusLabel;
+        
     }
 }

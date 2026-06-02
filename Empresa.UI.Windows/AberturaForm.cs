@@ -21,7 +21,7 @@ namespace Empresa.UI.Windows
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParam, int lParam);
 
-        // Painel invisível que criaremos via código para servir de fundo para os campos
+        
         private Panel cardFundo;
 
         public AberturaForm()
@@ -30,70 +30,70 @@ namespace Empresa.UI.Windows
             dataAberturaLabel.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
 
-            // Executa a reestruturação moderna
+            
             ConfigurarLayoutPremium();
         }
 
         private void ConfigurarLayoutPremium()
         {
-            // 1. Configuração do Card Centralizado de Fundo (Dá estrutura para a tela)
+            
             cardFundo = new Panel();
             cardFundo.Size = new Size(540, 320);
             cardFundo.Location = new Point((this.ClientSize.Width - cardFundo.Width) / 2, 55);
-            cardFundo.BackColor = Color.FromArgb(20, 25, 35, 45); // Um cinza/azul semi-transparente de verdade
+            cardFundo.BackColor = Color.FromArgb(20, 25, 35, 45); 
             cardFundo.Paint += CardFundo_Paint;
             this.Controls.Add(cardFundo);
 
-            // Mover os controles originais para dentro do Card ou trazê-los para frente
+            
             cardFundo.SendToBack();
 
             int larguraCampos = 460;
             int margemEsquerda = (this.ClientSize.Width - larguraCampos) / 2;
 
-            // Cores premium para dar o contraste ideal no modo escuro
-            Color corFundoInput = Color.FromArgb(20, 28, 46); // Um pouco mais claro que o fundo geral
-            Color corBordaFina = Color.FromArgb(50, 65, 95);  // Cinza azulado para destacar a borda
+            
+            Color corFundoInput = Color.FromArgb(20, 28, 46); 
+            Color corBordaFina = Color.FromArgb(50, 65, 95);  
 
-            // 2. Alinhamento do Setor
+            
             label4.Location = new Point(margemEsquerda, 70);
             setorComboBox.Location = new Point(margemEsquerda, 92);
             setorComboBox.Width = 220;
             setorComboBox.BackColor = corFundoInput;
             setorComboBox.ForeColor = Color.White;
 
-            // 3. Alinhamento do Assunto
+            
             label5.Location = new Point(margemEsquerda, 135);
             assuntoTextBox.Location = new Point(margemEsquerda, 157);
             assuntoTextBox.Width = larguraCampos;
             assuntoTextBox.BackColor = corFundoInput;
 
-            // 4. Alinhamento da Descrição
+            
             label3.Location = new Point(margemEsquerda, 200);
             descricaoRichTextBox.Location = new Point(margemEsquerda, 222);
             descricaoRichTextBox.Width = larguraCampos;
             descricaoRichTextBox.Height = 85;
             descricaoRichTextBox.BackColor = corFundoInput;
 
-            // Força a remoção de bordas tridimensionais
+            
             assuntoTextBox.BorderStyle = BorderStyle.FixedSingle;
             descricaoRichTextBox.BorderStyle = BorderStyle.FixedSingle;
 
-            // 5. Alinhamento da Prioridade e Botões
+            
             prioridadeCheckBox.Location = new Point(margemEsquerda, 322);
 
             panel2.BackColor = Color.Transparent;
             flowLayoutPanel1.Location = new Point(margemEsquerda, 5);
 
-            // Pequeno truque visual para o ComboBox parar de piscar em branco puro
+            
             setorComboBox.FlatStyle = FlatStyle.Popup;
         }
 
-        // Desenha uma borda sutil e cantos levemente definidos ao redor do grupo de inputs
+       
         private void CardFundo_Paint(object sender, PaintEventArgs e)
         {
             using (Pen pen = new Pen(Color.FromArgb(40, 60, 90), 1))
             {
-                // Desenha um retângulo suave ao redor dos campos, centralizando a atenção do usuário
+               
                 e.Graphics.DrawRectangle(pen, 0, 0, cardFundo.Width - 1, cardFundo.Height - 1);
             }
         }
@@ -106,8 +106,8 @@ namespace Empresa.UI.Windows
         private void AberturaForm_Paint(object sender, PaintEventArgs e)
         {
             using (LinearGradientBrush brush = new LinearGradientBrush(this.ClientRectangle,
-                Color.FromArgb(12, 19, 34),   // Azul marinho premium profundo
-                Color.FromArgb(28, 48, 82),   // Azul petróleo corporativo bem dosado
+                Color.FromArgb(12, 19, 34),   
+                Color.FromArgb(28, 48, 82),   
                 LinearGradientMode.ForwardDiagonal))
             {
                 e.Graphics.FillRectangle(brush, this.ClientRectangle);

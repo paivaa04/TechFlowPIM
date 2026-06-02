@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Empresa.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Empresa.Models;
 
 namespace Empresa.Db
 {
@@ -20,7 +21,7 @@ namespace Empresa.Db
                 
                 chamado.DataAbertura = DateTime.Now;
                 chamado.Status = "Em Aberto";
-                chamado.Prioridade = false; 
+                
 
                
                 chamado.IdUsuario = Sessao.UsuarioLogado.Id;
@@ -48,20 +49,47 @@ namespace Empresa.Db
         {
             using (var ctx = new AppDbContext())
             {
-                var chamado = ctx.Chamados.Find(chamadoAtualizado.Id);
-                if (chamado != null)
+                // Força a busca do registro direto neste novo contexto pelo ID bruto
+                var chamadoNoBanco = ctx.Chamados.FirstOrDefault(c => c.Id == chamadoAtualizado.Id);
+
+                if (chamadoNoBanco != null)
                 {
-                    
-                    chamado.Status = chamadoAtualizado.Status;
-                    chamado.Descricao = chamadoAtualizado.Descricao;
+                    // Atualiza explicitamente os campos permitidos
+                    chamadoNoBanco.Status = chamadoAtualizado.Status;
+                    chamadoNoBanco.Descricao = chamadoAtualizado.Descricao;
 
+                    int linhasAfetadas = ctx.SaveChanges();
 
-
-                    ctx.SaveChanges();
+                    if (linhasAfetadas == 0)
+                    {
+                        throw new Exception("O EF executou, mas nenhuma linha foi alterada no banco.");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"O chamado com ID {chamadoAtualizado.Id} não foi encontrado no banco.");
                 }
             }
         }
 
+        public void FinalizarChamado(int idChamado)
+        {
+            
+            if (Sessao.UsuarioLogado.TipoUsuario != 1) 
+            {
+                throw new Exception("Acesso negado: Somente técnicos podem finalizar chamados.");
+            }
+
+            using (var ctx = new AppDbContext())
+            {
+                var chamado = ctx.Chamados.Find(idChamado);
+                if (chamado != null)
+                {
+                    chamado.Status = "Finalizado";
+                    ctx.SaveChanges();
+                }
+            }
+        }
         public List<Chamado> Listar()
         {
             int tipoUsuario = Sessao.UsuarioLogado.TipoUsuario;
@@ -71,13 +99,12 @@ namespace Empresa.Db
             {
                 if (tipoUsuario == LoginDb.TipoUsuario.Tecnico)
                 {
-                   
-                    return ctx.Chamados.ToList();
+                    // O AsNoTracking() garante que virem dados frescos do banco
+                    return ctx.Chamados.AsNoTracking().ToList();
                 }
                 else
                 {
-                    
-                    return ctx.Chamados.Where(c => c.IdUsuario == usuarioId).ToList();
+                    return ctx.Chamados.AsNoTracking().Where(c => c.IdUsuario == usuarioId).ToList();
                 }
             }
         }
